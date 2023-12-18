@@ -1,0 +1,22 @@
+version: '3.4'
+volumes:
+  data:
+services:
+  cevem.caixa.web:
+    image: ${DOCKER_REGISTRY-}cevemcaixaweb
+    build:
+      context: .
+      dockerfile: Cevem.Caixa.Web/Dockerfile
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:11.2.2-jammy
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: cevem_caixa_ms
+      MYSQL_USER: cevem_caixa
+    ports:
+      - "3306:3306"
